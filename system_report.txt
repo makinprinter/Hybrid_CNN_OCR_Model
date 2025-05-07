@@ -1,0 +1,26 @@
+System Performance Report
+
+Accuracy for the combined model:
+86.70%
+
+Model: ALL
+Accuracy: 86.90%
+
+Model: O_False_I_True_Hl_False
+Accuracy: 88.42%
+
+Model: O_True_I_True_Hl_False
+Accuracy: 90.61%
+
+Model: O_False_I_False_Hl_True
+Accuracy: 87.77%
+
+Model: O_False_I_True_Hl_True
+Accuracy: 88.35%
+
+Model: O_True_I_False_Hl_True
+Accuracy: 87.54%
+
+Model: O_True_I_True_Hl_True
+Accuracy: 90.87%
+
