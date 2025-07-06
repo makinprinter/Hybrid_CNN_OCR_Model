@@ -23,15 +23,16 @@ Example:
 The input image is the letter "Q".
 
 Why This Approach?
+ The goal of this experiment was to explore whether combining classical image processing techniques (feature detection) with deep learning (CNNs) can improve performance—especially in scenarios where:
 
-The goal of this experiment was to explore whether combining classical image processing techniques (feature detection) with deep learning (CNNs) can improve performance—especially in scenarios where:
+- Certain character groups share distinct visual traits,
 
-Certain character groups share distinct visual traits,
+- Training data can be subdivided into more manageable, specialized pools,
 
-Training data can be subdivided into more manageable, specialized pools,
+- Model interpretability or modularity is a focus.
 
-Model interpretability or modularity is a focus.
-
+- Data set is very heterogeneous.(Example: 18-19th century Creten Greek mixed with English)
+  
 By breaking down the OCR problem into sub-problems, each CNN can specialize, which might reduce confusion between visually similar characters within the same attribute group.
 
 
