@@ -12,9 +12,9 @@ The following is a diagram of how the system works.
 
 	  [Rules based Sorting model] # It chooses O in this is case. In addition, the full system connects to model_v_h, model_h_o and so on.  
 	      /      |       \
- [model_v] [model_H] [model_O]# each model is a conventional neural network. 
+	 [model_v] [model_H] [model_O]# each model is a conventional neural network. 
                          | 
-		             	image is a "Q"
+		 image is a "Q"
 
 
  
