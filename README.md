@@ -18,9 +18,7 @@ The following is a diagram of how the system works:
 
 
 
- 
-Example:
-The input image is the letter "Q".
+ The input image is the letter "Q".
 
 Why This Approach?
  The goal of this experiment was to explore whether combining classical image processing techniques (feature detection) with deep learning (CNNs) can improve performance—especially in scenarios where:
