@@ -11,18 +11,13 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.models import load_model
 from Sort_o_and_I import Is_O_or_I_old,Is_O_or_I
 from sklearn.model_selection import train_test_split
-from Opener import train_x, train_y, test_x, test_y,Full_x,Full_y
-
-
-
-
+from Opener import getData
 
 def prepare_data():
     attribute_dict = {}
     attribute_dict["ALL"] = {'X': [], 'y': [],"Letters":[]}
 
     for i, image in tqdm(enumerate(train_x)):
-        
         O, I, H_l = Is_O_or_I_old(image,[17,4,17,4],0.9)
         key = f"O_{O}_I_{I}_Hl_{H_l}"        
         if key not in attribute_dict:
@@ -30,7 +25,6 @@ def prepare_data():
         
         if np.argwhere(train_y[i] == 1)[0][0] not in attribute_dict[key]['Letters']:
             attribute_dict[key]['Letters'].append(np.argwhere(train_y[i] == 1)[0][0])        
-            
         attribute_dict["ALL"]['X'].append(image)
         attribute_dict["ALL"]['y'].append(train_y[i])
 
@@ -41,6 +35,7 @@ def prepare_data():
                 if key !="ALL" and np.argwhere(train_y[i] == 1)[0][0] in attribute_dict[key]['Letters']:
                     attribute_dict[key]['X'].append(image)
                     attribute_dict[key]['y'].append(train_y[i])
+                    
     ListToRemove = []
     for key in attribute_dict.keys():
         if len(attribute_dict["ALL"]['X']) == len(attribute_dict[key]['X']):
@@ -49,8 +44,7 @@ def prepare_data():
             
     for key0 in ListToRemove:
         ReturnedValue = attribute_dict.pop(key0)
-        
-        
+    
     return attribute_dict
 
 def remap_labels(y_train_int, y_test_int):
@@ -76,6 +70,7 @@ def remap_labels(y_train_int, y_test_int):
 def save_dict_to_file(attribute_dict, filename):
     with open(filename, 'wb') as f:
         pickle.dump(attribute_dict, f)
+        
 def load_dict_from_file(filename):
     with open(filename, 'rb') as f:
         return pickle.load(f)
@@ -88,43 +83,30 @@ def train_and_save_models(attribute_dict,ShouldTrain):
     valDict = {} 
     for key, data in tqdm(attribute_dict.items()):
         
-        X_train, X_test, y_train, y_test = train_test_split(
-            np.array(data['X']), np.array(data['y']), test_size=0.3, random_state=42#,stratify=np.array(data['y'])
-        )
+        X_train, X_test, y_train, y_test = train_test_split(np.array(data['X']), np.array(data['y']), test_size=0.3, random_state=42)
      
         
         y_train_int = np.argmax(y_train, axis=1)
         num_classes = np.unique(y_train_int).size
         y_test_int = np.argmax(y_test, axis=1)
         model_path = f"models/{key}.keras"
-        
-        
         unique_labels = np.unique(y_train_int)
-        
         y_train_int, y_test_int, label_mapping  = remap_labels(y_train_int, y_test_int)
-        
-        
         unique_labels = np.unique(y_train_int)
         y_test_int0 = np.unique(y_test_int)
-        
-        
+
         if key not in valDict:
             valDict[key] = {'X': [], 'y': [],"map":label_mapping}
-        #valDict[key] = {'X': [X_train,X_test], 'y': [y_train_int0,y_test_int0]}
             
         valDict[key]['X'].append(X_test)
         valDict[key]['y'].append(y_test_int)
         if ShouldTrain:
             model = Modded_CNN(X_train, X_test, y_train_int, y_test_int, num_classes, 2, "models",key)
         
-        
-        model_paths[key] = model_path
-        
-        
+        model_paths[key] = model_path        
     with open("models/model_index.pkl", "wb") as f:
         pickle.dump(model_paths, f)
-    
-    
+
     return valDict
 
 def FullRun(image):
@@ -199,8 +181,8 @@ def CombinedReportMaker(ListForSort, attribute_dict, test_x, test_y, valDict):
                     Totalcount += 1
                     break  
 
-    #print(Totalcount, "Totalcount")# In case you want to print the report as well as make a file out off it. 
-    #print((Totalcount / 18799) * 100, "Totalcount percent")
+    print(Totalcount, "Totalcount") 
+    print((Totalcount / 18799) * 100, "Totalcount percent")
 
     report = ""
     report += f"Totalcount: {Totalcount}\n"
@@ -212,7 +194,7 @@ def CombinedReportMaker(ListForSort, attribute_dict, test_x, test_y, valDict):
 
 
 
-
+train_x, train_y, test_x, test_y,Full_x,Full_y = getData()
 ModelPath = 'models/TestFasterAttributeDict7.pkl'
 
 attribute_dict = load_dict_from_file(ModelPath)
