@@ -1,14 +1,13 @@
-import cv2
 import os
+import re
+import cv2
 import shutil
 import numpy as np
 from tqdm import tqdm
-import re
 import matplotlib.pyplot as plt
 
 
 def calculate_circularity(contour):
-    
     area = cv2.contourArea(contour)
     perimeter = cv2.arcLength(contour, True)
     circularity = 4 * 3.14159265358979323846 * (area / (perimeter * perimeter))
@@ -52,10 +51,8 @@ def count_valid_lines(grid,max_lenth,max_width):
     rows, cols = shape
     for i in range(rows-max_width):  
         window = grid[i:i+max_width] 
-        row_sums = np.sum(window, axis=0) 
-            
+        row_sums = np.sum(window, axis=0)  
         valid_columns = (row_sums == max_width * 255).astype(int)  
-
         rolling_sums = np.convolve(valid_columns, np.ones(max_lenth, dtype=int), mode='valid')
         count += np.count_nonzero(rolling_sums == max_lenth)
 
@@ -66,8 +63,6 @@ def Is_O_or_I_old(image_array,max_list=[1,1,1,1],circularity_threshold=0.7):
    
     gray = (image_array * 255).astype(np.uint8) 
     contour_image = np.zeros_like(image_array)
-    
-    
     
     thr =  107
     maxvel = 255
@@ -87,12 +82,8 @@ def Is_O_or_I_old(image_array,max_list=[1,1,1,1],circularity_threshold=0.7):
     threshold1 = 50
     threshold2 = 300
     edges = cv2.Canny(gray, threshold1, threshold2)
-    
-    
-    contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-    
-    
+    contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     circularity_threshold = 0.7 
     circular_contours = Find_circular(contours,circularity_threshold)
     
