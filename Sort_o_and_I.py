@@ -59,7 +59,7 @@ def count_valid_lines(grid,max_lenth,max_width):
     return count
 
 
-def Is_O_or_I_old(image_array,max_list=[1,1,1,1],circularity_threshold=0.7): 
+def Is_O_or_I_Later_Sort(image_array,max_list=[1,1,1,1],circularity_threshold=0.7): 
    
     gray = (image_array * 255).astype(np.uint8) 
     contour_image = np.zeros_like(image_array)
