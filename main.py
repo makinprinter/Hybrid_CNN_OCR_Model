@@ -9,7 +9,7 @@ from CNN import Modded_CNN
 import FullReportMaker as FR  
 import matplotlib.pyplot as plt
 from tensorflow.keras.models import load_model
-from Sort_o_and_I import Is_O_or_I_old,Is_O_or_I
+from Sort_o_and_I import Is_O_or_I_Later_Sort,Is_O_or_I
 from sklearn.model_selection import train_test_split
 from Opener import getData
 
@@ -18,7 +18,7 @@ def prepare_data():
     attribute_dict["ALL"] = {'X': [], 'y': [],"Letters":[]}
 
     for i, image in tqdm(enumerate(train_x)):
-        O, I, H_l = Is_O_or_I_old(image,[17,4,17,4],0.9)
+        O, I, H_l = Is_O_or_I_Later_Sort(image,[17,4,17,4],0.9)
         key = f"O_{O}_I_{I}_Hl_{H_l}"        
         if key not in attribute_dict:
             attribute_dict[key] = {'X': [], 'y': [],"Letters":[]}       
