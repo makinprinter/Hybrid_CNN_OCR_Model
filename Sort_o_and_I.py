@@ -25,7 +25,7 @@ def Find_circular(contours,circularity_threshold):
     return circular_contours
 
     
-def Is_O_or_I(image_array, max_list=[1,1,1,1], circularity_threshold=0.7):#was [9,3,9,3]
+def Is_O_or_I(image_array, max_list=[1,1,1,1], circularity_threshold=0.7):
     gray = (image_array * 255).astype(np.uint8) 
     
     thresholded_image = cv2.threshold(gray, 107, 255, cv2.THRESH_BINARY)[1]
@@ -44,20 +44,18 @@ def Is_O_or_I(image_array, max_list=[1,1,1,1], circularity_threshold=0.7):#was [
 
 
 def count_valid_lines(grid,max_lenth,max_width):
-    grid = grid.astype(int)  # Convert boolean to 1s and 0s
+    grid = grid.astype(int) 
     count = 0
 
-    # Slide over all sets of 3 consecutive rows
+    
     shape = grid.shape
     rows, cols = shape
-    for i in range(rows-max_width):  # 26 possible sets of 3 rows in a 28-row grid
-        window = grid[i:i+max_width]  # Take 3 consecutive rows
-        row_sums = np.sum(window, axis=0)  # Sum along columns
-        
-        # Only consider columns where all 3 rows are True
+    for i in range(rows-max_width):  
+        window = grid[i:i+max_width] 
+        row_sums = np.sum(window, axis=0) 
+            
         valid_columns = (row_sums == max_width * 255).astype(int)  
-        
-        # Check for sequences of 15 consecutive Trues in valid_columns
+
         rolling_sums = np.convolve(valid_columns, np.ones(max_lenth, dtype=int), mode='valid')
         count += np.count_nonzero(rolling_sums == max_lenth)
 
